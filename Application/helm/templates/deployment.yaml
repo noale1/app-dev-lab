@@ -21,6 +21,9 @@ spec:
             defaultMode: 420
       containers:
         - resources: {}
+          volumeMounts:
+          - name: index-html
+            mountPath: /tmp/html
           terminationMessagePath: /dev/termination-log
           name: {{ .Chart.Name }}
           ports:
@@ -29,9 +32,6 @@ spec:
           imagePullPolicy: IfNotPresent
 # Update with the image you build in part 1
           image: {{ .Values.containers.image }}:{{ .Values.containers.tag }}
-        - volumeMounts:
-          - name: index-html
-            mountPath: /tmp/html
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
   strategy:
