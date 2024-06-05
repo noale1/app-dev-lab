@@ -3,6 +3,18 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Chart.Name }}
 spec:
+  template:
+    spec:
+      volumes:
+        - name: index-html
+          configMap:
+            name: '{{ .Chart.Name }}-html'
+            defaultMode: 420
+      containers:
+        volumeMounts:
+          - name: index-html
+            mountPath: /tmp/html
+spec:
   replicas: {{ .Values.ReplicaNumber }}
   selector:
     matchLabels:
@@ -32,15 +44,3 @@ spec:
       maxUnavailable: 25%
       maxSurge: 25%
   revisionHistoryLimit: 10
-  spec:
-    template:
-      spec:
-        volumes:
-          - name: index-html
-            configMap:
-              name: '{{ .Chart.Name }}-html'
-              defaultMode: 420
-        containers:
-          volumeMounts:
-            - name: index-html
-              mountPath: /tmp/html
