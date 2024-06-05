@@ -3,7 +3,7 @@ deploy1:
 
   containers:
       containerPort: 8080
-      image: 'quay.io/noale/helloworld:v3'
+      image: 'quay.io/noale/helloworld:chart_v1cd'
       tag: 'chart_v1cd'
 
   service:
