@@ -42,5 +42,5 @@ spec:
               defaultMode: 420
         containers:
           volumeMounts:
-          - name: index-html
-            mountPath: /tmp/html
+            - name: index-html
+              mountPath: /tmp/html
