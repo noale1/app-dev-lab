@@ -3,7 +3,16 @@ apiVersion: apps/v1
 metadata:
   name: {{ .Chart.Name }}
 spec:
+  replicas: {{ .Values.ReplicaNumber }}
+  selector:
+    matchLabels:
+      # set your lab user name
+      app: {{ .Chart.Name }}
   template:
+    metadata: 
+      labels:
+        # set your lab user name
+        app: {{ .Chart.Name }}
     spec:
       volumes:
         - name: index-html
@@ -11,31 +20,17 @@ spec:
             name: '{{ .Chart.Name }}-html'
             defaultMode: 420
       containers:
-        volumeMounts:
-          - name: index-html
-            mountPath: /tmp/html
-spec:
-  replicas: {{ .Values.ReplicaNumber }}
-  selector:
-    matchLabels:
-# set your lab user name
-      app: {{ .Chart.Name }}
-  template:
-    metadata: 
-      labels:
-# set your lab user name
-        app: {{ .Chart.Name }}
-    spec:
-      containers:
-        - resources: {}
-          terminationMessagePath: /dev/termination-log
-          name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.containers.image }}:{{ .Values.containers.tag }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.containers.containerPort }}
               protocol: TCP
-          imagePullPolicy: IfNotPresent
-# Update with the image you build in part 1
-          image: {{ .Values.containers.image }}:{{ .Values.containers.tag }}
+          volumeMounts:
+            - name: index-html
+              mountPath: /tmp/html
+          resources: {}
+          terminationMessagePath: /dev/termination-log
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
   strategy:
