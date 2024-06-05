@@ -17,4 +17,4 @@ deploy2:
       tag: 'chart_v1cd'
 
   service:
-    servicePort: 8080
+      servicePort: 8080
