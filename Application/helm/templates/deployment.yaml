@@ -20,6 +20,9 @@ spec:
             name: '{{ .Chart.Name }}-html'
             defaultMode: 420
       containers:
+          env:
+            - name: PORT
+              value: {{ .Values.containers.containerPort | quote }}
           readinessProbe:
             httpGet:
               path: /health/readiness # this check the application url path
@@ -40,9 +43,6 @@ spec:
               periodSeconds: 10
               successThreshold: 1
               failureThreshold: 3
-          env:
-            - name: PORT
-              value: {{ .Values.containers.containerPort | quote }}
         - resources: {}
           volumeMounts:
           - name: index-html
