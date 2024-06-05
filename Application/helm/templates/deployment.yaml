@@ -6,54 +6,55 @@ spec:
   replicas: {{ .Values.ReplicaNumber }}
   selector:
     matchLabels:
-      # set your lab user name
+# set your lab user name
       app: {{ .Chart.Name }}
   template:
-    metadata:
+    metadata: 
       labels:
-        # set your lab user name
+# set your lab user name
         app: {{ .Chart.Name }}
     spec:
       volumes:
         - name: index-html
-          configMap:
+          configMap: 
             name: '{{ .Chart.Name }}-html'
             defaultMode: 420
       containers:
-        - name: {{ .Chart.Name }}
-          image: {{ .Values.containers.image }}:{{ .Values.containers.tag }}
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: {{ .Values.containers.containerPort }}
-              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health/readiness # this check the application url path
+              port: {{ .Values.containers.containerPort  }} # In which port the Application is listening
+              scheme: HTTP
+            initialDelaySeconds: 1 # the time is waiting befor testing the application path
+            timeoutSeconds: 1 # the time for timeout
+            periodSeconds: 10 # the abount of time to wait between checks
+            successThreshold: 1 # count to decalre seccessfull 
+            failureThreshold: 3 # count to decalre failure 
+          livenessProbe:
+            httpGet:
+                path: /health/liveliness
+                port: {{ .Values.containers.containerPort }}
+                scheme: HTTP
+              initialDelaySeconds: 1
+              timeoutSeconds: 1
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
+        - resources: {}
           env:
             - name: PORT
               value: {{ .Values.containers.containerPort | quote }}
           volumeMounts:
-            - name: index-html
-              mountPath: /tmp/html
-          readinessProbe:
-            httpGet:
-              path: /health/readiness # this checks the application URL path
-              port: {{ .Values.containers.containerPort }} # The port the application is listening on
-              scheme: HTTP
-            initialDelaySeconds: 1 # The time waiting before testing the application path
-            timeoutSeconds: 1 # The timeout duration
-            periodSeconds: 10 # The amount of time to wait between checks
-            successThreshold: 1 # The count to declare successful
-            failureThreshold: 3 # The count to declare failure
-          livenessProbe:
-            httpGet:
-              path: /health/liveliness
-              port: {{ .Values.containers.containerPort }}
-              scheme: HTTP
-            initialDelaySeconds: 1
-            timeoutSeconds: 1
-            periodSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
-          resources: {}
+          - name: index-html
+            mountPath: /tmp/html
           terminationMessagePath: /dev/termination-log
+          name: {{ .Chart.Name }}
+          ports:
+            - containerPort: {{ .Values.containers.containerPort }}
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+# Update with the image you build in part 1
+          image: {{ .Values.containers.image }}:{{ .Values.containers.tag }}
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
   strategy:
