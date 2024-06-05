@@ -1,5 +1,5 @@
 apiVersion: v2
-name: <app-dev-lab>
+name: app-dev-lab
 description: A Helm chart for Kubernetes
 type: application
 version: 1.0.0
