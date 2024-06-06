@@ -2,19 +2,20 @@ deploy1:
   ReplicaNumber: 1
 
   containers:
-      containerPort: 8080
-      image: 'quay.io/noale/helloworld'
-      tag: 'chart_v1cd'
+    containerPort: 8080
+    image: 'quay.io/noale/helloworld'
+    tag: 'chart_v1cd'
 
   service:
-      servicePort: 8080
+    servicePort: 8080
+
 deploy2: 
   ReplicaNumber: 1
 
   containers:
-      containerPort: 8080
-      image: 'quay.io/noale/helloworld'
-      tag: 'chart_v1cd'
+    containerPort: 8080
+    image: 'quay.io/noale/helloworld'
+    tag: 'chart_v1cd'
 
   service:
-      servicePort: 8080
+    servicePort: 8080
