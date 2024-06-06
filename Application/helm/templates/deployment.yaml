@@ -10,8 +10,8 @@ spec:
       app: {{ .Chart.Name }}
   template:
     metadata:
-      # annotations:
-        # checksum/config: {{ include (print $.Template.BasePath "/ConfigMap.yaml" . | sha256sum)}}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/ConfigMap.yaml" . | sha256sum)}}
       labels:
         app: {{ .Chart.Name }}
     spec:
