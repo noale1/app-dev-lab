@@ -6,6 +6,10 @@ deploy1:
     image: 'quay.io/noale/helloworld'
     tag: 'chart_v1cd'
 
+  argocd:
+    syncwave:
+      deployment: 5
+
   service:
     servicePort: 8080
 
@@ -16,10 +20,10 @@ deploy2:
     containerPort: 8080
     image: 'quay.io/noale/helloworld'
     tag: 'chart_v1cd'
+  
+  argocd:
+    syncwave:
+      deployment: 5
 
   service:
     servicePort: 8080
-
-argocd:
-  syncwave:
-     deployment: 5
