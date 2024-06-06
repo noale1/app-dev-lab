@@ -2,8 +2,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: {{ .Chart.Name }}
-  annotations:
-    argocd.argoproj.io/sync-wave: {{ .Values.argocd.syncwave.deployment }}
 spec:
   replicas: {{ .Values.ReplicaNumber }}
   selector:
@@ -13,6 +11,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/ConfigMap.yaml") . | sha256sum }}
+        argocd.argoproj.io/sync-wave: {{ .Values.argocd.syncwave.deployment }}
       labels:
         app: {{ .Chart.Name }}
     spec:
