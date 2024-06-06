@@ -9,13 +9,13 @@ deploy1:
   service:
     servicePort: 8080
 
-# deploy2: 
-#   ReplicaNumber: 1
+deploy2: 
+  ReplicaNumber: 1
 
-#   containers:
-#     containerPort: 8080
-#     image: 'quay.io/noale/helloworld'
-#     tag: 'chart_v1cd'
+  containers:
+    containerPort: 8080
+    image: 'quay.io/noale/helloworld'
+    tag: 'chart_v1cd'
 
-#   service:
-#     servicePort: 8080
+  service:
+    servicePort: 8080
